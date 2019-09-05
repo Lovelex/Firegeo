@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+
+// Components
+import VueMap from './components/home/Map.vue'
+import Profile from './components/Profile.vue'
+import Signup from './components/auth/Signup.vue'
+import Login from './components/auth/Login.vue'
 
 Vue.use(Router)
 
@@ -9,17 +14,24 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      name: 'Map',
       path: '/',
-      name: 'home',
-      component: Home
+      component: VueMap
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
+      name: 'Map',
+      path: '/profile/:slug',
+      component: Profile
+    },
+    {
+      name: 'Signup',
+      path: '/signup',
+      component: Signup
+    },
+    {
+      name: 'Login',
+      path: '/login',
+      component: Login
+    },
   ]
 })
