@@ -19,7 +19,7 @@ export default new Router({
       component: VueMap
     },
     {
-      name: 'Map',
+      name: 'Profile',
       path: '/profile/:slug',
       component: Profile
     },
