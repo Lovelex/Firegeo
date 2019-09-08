@@ -6,9 +6,10 @@
           Fire Geo
         </router-link>
         <ul class="right">
-          <li v-if="!isUserLogged()"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
-          <li v-if="!isUserLogged()"><router-link :to="{ name: 'Login' }">Login</router-link></li>
-          <li v-if="isUserLogged()"><a @click="logout">Logout</a></li>
+          <li v-if="!user"><router-link :to="{ name: 'Signup' }">Signup</router-link></li>
+          <li v-if="!user"><router-link :to="{ name: 'Login' }">Login</router-link></li>
+          <li v-if="user">{{user.email}}</li>
+          <li v-if="user"><a @click="logout">Logout</a></li>
         </ul>
       </div>
     </nav>
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import db from '@/firebase/init.js'
 import slugify from 'slugify'
 
@@ -24,13 +25,18 @@ export default {
   name: "Navbar",
   data() {
     return {
-      
+      user: null
     }
   },
 
   methods: {
     isUserLogged() {
-      return firebase.auth().currentUser
+      firebase.auth().onAuthStateChanged(user => {
+        user
+          ? this.user = user
+          : this.user = false
+        
+      })
     },
     logout() {
       firebase.auth().signOut()
@@ -38,6 +44,10 @@ export default {
           this.$router.push({ name: 'Login' })
         })
     }
+  },
+
+  created() {
+    this.isUserLogged()
   }
 };
 </script>
